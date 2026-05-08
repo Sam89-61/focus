@@ -14,10 +14,8 @@ export function usePomodoro() {
     const [timeLeft, setTimeLeft] = useState(DEFAULT_TIMES.pomodoro)
     const [isActive, setIsActive] = useState(false)
     
-    // Persistent settings for each mode
     const [settings, setSettings] = useState<Record<TimerMode, number>>(DEFAULT_TIMES)
     
-    // Auto-flow settings
     const [autoFlow, setAutoFlow] = useState(false)
     const [targetSessions, setTargetSessions] = useState(3)
     const [completedSessions, setCompletedSessions] = useState(0)

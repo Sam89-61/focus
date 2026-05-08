@@ -14,9 +14,12 @@ export function usePlayer() {
     const [tracks, setTracks] = useState<Track[]>([])
     const [currentTrackIndex, setCurrentTrackIndex] = useState<number | null>(null)
     const [isPlaying, setIsPlaying] = useState(false)
+    const [volume, setVolume] = useState(0.5)
 
     useEffect(() => {
         const savedTracks = localStorage.getItem("player_tracks")
+        const savedVolume = localStorage.getItem("player_volume")
+        
         if (savedTracks) {
             try {
                 setTracks(JSON.parse(savedTracks))
@@ -24,7 +27,17 @@ export function usePlayer() {
                 console.error("Failed to parse tracks", e)
             }
         }
+        
+        if (savedVolume) {
+            setVolume(parseFloat(savedVolume))
+        }
     }, [])
+
+    const updateVolume = (val: number) => {
+        const newVol = Math.max(0, Math.min(1, val))
+        setVolume(newVol)
+        localStorage.setItem("player_volume", newVol.toString())
+    }
 
     const saveTracks = (newTracks: Track[]) => {
         setTracks(newTracks)
@@ -77,6 +90,8 @@ export function usePlayer() {
         tracks,
         currentTrack: currentTrackIndex !== null ? tracks[currentTrackIndex] : null,
         isPlaying,
+        volume,
+        updateVolume,
         addTrack,
         removeTrack,
         playTrack,
